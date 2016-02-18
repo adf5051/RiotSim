@@ -16,11 +16,7 @@ public class Rioter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         navAgent = gameObject.GetComponent<NavMeshAgent>();
-        navAgent.SetDestination(goal.position);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        navAgent.areaMask = 1 << 3;
+        navAgent.SetDestination(goal.position);   
 	}
 }
