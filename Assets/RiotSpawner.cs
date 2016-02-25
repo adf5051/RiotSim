@@ -32,6 +32,7 @@ public class RiotSpawner : MonoBehaviour {
             pos = new Vector3(x, 2, z);
             temp.transform.position = pos;
             temp.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+            temp.name = "Rioter";
         }
 	}
 

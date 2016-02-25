@@ -27,6 +27,8 @@ public class CivilianSpawner : MonoBehaviour {
             pos = new Vector3(x, 2, z);
             temp.transform.position = pos;
             temp.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+
+            temp.name = "Civilian";
         }
     }
 
