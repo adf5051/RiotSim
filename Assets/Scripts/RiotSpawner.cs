@@ -13,6 +13,9 @@ public class RiotSpawner : MonoBehaviour {
     [SerializeField]
     private Transform riotGoal;
 
+    [SerializeField]
+    private RAIN.BehaviorTrees.BTAsset riotBehavior;
+
     private Bounds bounds;
 
 	// Use this for initialization
@@ -21,12 +24,15 @@ public class RiotSpawner : MonoBehaviour {
         bounds = gameObject.GetComponent<MeshFilter>().mesh.bounds;
 
         GameObject temp;
-        Rioter script;
+        RAIN.Core.AI rig;
         Vector3 pos;
 	    for(int i = 0; i < numRioters; i++) {
             temp = GameObject.Instantiate(charPrefab);
-            script = temp.AddComponent<Rioter>();
-            script.EndGoal = riotGoal;
+            rig = temp.GetComponentInChildren<RAIN.Core.AIRig>().AI;
+            RAIN.Minds.BasicMind mind = rig.Mind as RAIN.Minds.BasicMind;
+            mind.SetTreeForBinding("Riot Tree", riotBehavior);
+            mind.ReloadBinding("Riot Tree");
+
             float x = Random.Range(-bounds.extents.x * transform.localScale.x, bounds.extents.x * transform.localScale.x) + transform.position.x;
             float z = Random.Range(-bounds.extents.z * transform.localScale.z, bounds.extents.z * transform.localScale.z) + transform.position.z;
             pos = new Vector3(x, 2, z);
