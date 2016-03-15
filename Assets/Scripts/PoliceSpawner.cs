@@ -5,48 +5,37 @@ using System.Collections.Generic;
 public class PoliceSpawner : MonoBehaviour {
 
     [SerializeField]
-    private GameObject charPrefab;
+    private GameObject charPrefab = null;
 
     [SerializeField]
     [Range(1, 5)]
-    private int numPolice;
+    private int numPolice = 2;
 
     [SerializeField]
     private Transform[] patrolPoints;
-
-    [SerializeField]
-    private WaypointRig patrol;
-
-    [SerializeField]
-    private bool left;
-
-    [SerializeField]
-    private RAIN.BehaviorTrees.BTAsset policeBehavior;
-
-    [SerializeField]
-    public RAIN.BehaviorTrees.BTNode headNode;
 
     // Use this for initialization
     void Start () {
         int trans;
         GameObject temp;
         RAIN.Core.AI rig;
-        IList<Waypoint> waypoints = patrol.WaypointSet.Waypoints;
 
-        for (int i = 0; i < numPolice; i++) {
-            trans = Random.Range(0, waypoints.Count);
+        if (patrolPoints != null && patrolPoints.Length > 0)
+        {
+            for (int i = 0; i < numPolice; i++)
+            {
+                trans = Random.Range(0, patrolPoints.Length);
 
-            temp = GameObject.Instantiate(charPrefab);
-            rig = temp.GetComponentInChildren<RAIN.Core.AIRig>().AI;
-            RAIN.Minds.BasicMind mind = rig.Mind as RAIN.Minds.BasicMind;
-            mind.SetTreeForBinding("Police Tree", policeBehavior);
-            //mind.BehaviorRoot = policeBehavior.;
-            mind.ReloadBinding("Police Tree");
-            rig.WorkingMemory.SetItem<bool>("left", left);
-
-            temp.transform.position = waypoints[trans].Position + Vector3.up;
-            temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
-            temp.name = "Police";
+                temp = GameObject.Instantiate(charPrefab);
+                temp.SetActive(false);
+                rig = temp.GetComponentInChildren<RAIN.Core.AIRig>().AI;
+                RAIN.Minds.BasicMind mind = rig.Mind as RAIN.Minds.BasicMind;
+                rig.WorkingMemory.SetItem<Transform>("patrolRoute", patrolPoints[0].parent);                
+                temp.transform.position = patrolPoints[trans].position;
+                temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
+                temp.name = "Police";
+                temp.SetActive(true);
+            }
         }
 	}
 	
