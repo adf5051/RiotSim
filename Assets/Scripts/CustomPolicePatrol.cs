@@ -11,19 +11,14 @@ public class CustomPolicePatrol : RAINAction {
     {
         agent = ai.Body.GetComponent<NavMeshAgent>();
         agent.SetDestination(ai.WorkingMemory.GetItem<Vector3>("moveTarget"));
-        agent.areaMask = (1 << 5) | (1 << 4);
+        agent.areaMask = (1 << 5) | (1 << 4) | (1<<3);
         agent.autoBraking = false;
         base.Start(ai);
     }
 
     public override ActionResult Execute(AI ai)
     {
-        if (agent.remainingDistance < 0.5)
-        {
-            return ActionResult.SUCCESS;
-        }
-
-        return ActionResult.RUNNING;
+        return ActionResult.SUCCESS;
     }
 
     public override void Stop(AI ai)

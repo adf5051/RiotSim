@@ -33,7 +33,6 @@ public class PoliceFindPatrolPoint : RAINDecision
         else
         {
             patrolPoints = null;
-            Debug.Log(ai.Body, ai.Body);
         }
 
     }
@@ -61,8 +60,13 @@ public class PoliceFindPatrolPoint : RAINDecision
             ai.WorkingMemory.SetItem<Vector3>("moveTarget", currentPoint.transform.position);
         }
 
+        if (ai.WorkingMemory.GetItem<bool>("RiotSpotted"))
+        {
+            return ActionResult.FAILURE;
+        }
+
         ActionResult tResult = _children[0].Run(ai);
-        if(_children[0].Run(ai) == ActionResult.SUCCESS && pointReady)
+        if (tResult == ActionResult.SUCCESS && pointReady && ai.Body.GetComponent<NavMeshAgent>().remainingDistance < 0.5)
         {
             currentPoint = currentPoint.next.GetComponent<PatrolPoint>();
             pointReady = false;
