@@ -30,11 +30,10 @@ public class FallBackMove : RAINAction
             agent.Resume();
         }
 
-        if(agent.remainingDistance < 0.1)
+        if(agent.remainingDistance < 0.5 || fb == ai.WorkingMemory.GetItem<FallbackPoint>("CurrentFB"))
         {
             ai.WorkingMemory.SetItem<FallbackPoint>("CurrentFB", fb);
             agent.Stop();
-            Debug.Log("BOOYA");
             return ActionResult.SUCCESS;
         }
 

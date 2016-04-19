@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class FallbackPoint : MonoBehaviour {
 
@@ -8,6 +8,13 @@ public class FallbackPoint : MonoBehaviour {
 
     [SerializeField]
     private GameObject[] barrierStorage;
+
+    private List<BarrierPlacementSpot> barrierSpots = new List<BarrierPlacementSpot>();
+
+    public List<BarrierPlacementSpot> BarrierSpots
+    {
+        get { return barrierSpots; }
+    }
 
     public GameObject[] BarrierStorage
     {
@@ -23,6 +30,18 @@ public class FallbackPoint : MonoBehaviour {
     public bool Compromised
     {
         get; private set;
+    }
+
+    void Start()
+    {
+        foreach(Transform t in transform)
+        {
+            BarrierPlacementSpot bps = t.gameObject.GetComponent<BarrierPlacementSpot>();
+            if(t.gameObject.name.Contains("BarrierSpot") && bps != null)
+            {
+                barrierSpots.Add(bps);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)

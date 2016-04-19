@@ -21,18 +21,15 @@ public class DetectRiotPosition : RAINDecision
         ActionResult tResult = ActionResult.SUCCESS;
 
         FallbackPoint fp = FallbackPointManager.Instance.FindNextUncompromised();
+        ai.WorkingMemory.SetItem<FallbackPoint>("SeekFB", fp);
         FallbackPoint current = ai.WorkingMemory.GetItem<FallbackPoint>("CurrentFB");
 
         if (fp.FormationPoint || fp == null)
         {
             return ActionResult.FAILURE;
         }
-
-        if (current == null || current != fp)
-        {
-            ai.WorkingMemory.SetItem<FallbackPoint>("SeekFB", fp);
-            tResult = _children[_children.Count - 1].Run(ai);
-        }
+            
+        tResult = _children[_children.Count - 1].Run(ai);    
 
         return tResult;
     }

@@ -30,11 +30,24 @@ public class Police : MonoBehaviour
     public float HorizontalFOV { get; set; }
 
     [SerializeField]
+    private float strength = 5;
+    public float Strength
+    {
+        get { return strength; }
+        set { strength = value; }
+    }
+
+    [SerializeField]
     private float speed = 5;
     public float Speed
     {
         get { return speed; }
         set { speed = value; }
+    }
+
+    public GameObject Barrier
+    {
+        get; set;
     }
 
     void Awake()
