@@ -39,4 +39,17 @@ public class FallbackPointManager : MonoBehaviour {
 
         return null;
     }
+
+    public FallbackPoint FindFormationPoint()
+    {
+        foreach (FallbackPoint fb in fallbackPoints)
+        {
+            if (fb.FormationPoint)
+            {
+                return fb;
+            }
+        }
+
+        return null;
+    }
 }

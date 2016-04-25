@@ -19,6 +19,7 @@ public class FindEmptyBarrierSpot : RAINDecision
 
         FallbackPoint fb = ai.WorkingMemory.GetItem<FallbackPoint>("CurrentFB");
         Vector3 target = ai.WorkingMemory.GetItem<Vector3>("Target");
+        //Vector3 target = fb.RandomUnclaimedSpot().transform.position;
         
         if (fb != null && !fb.FormationPoint && fb.BarrierSpots.Count >= 0)
         {
@@ -34,7 +35,7 @@ public class FindEmptyBarrierSpot : RAINDecision
                     closest = target;
                     break;
                 }
-                else if (bps.Claimed || bps.Barrier)
+                else if ( bps.Barrier)
                 {
                     continue;
                 }
@@ -53,10 +54,16 @@ public class FindEmptyBarrierSpot : RAINDecision
 
             if (closestSpot)
                 closestSpot.Claimed = true;
+
+            tResult = _children[0].Run(ai);
+            return tResult;
+        }
+        else
+        {
+            return ActionResult.FAILURE;
         }
 
-        tResult = _children[0].Run(ai);
-        return tResult;
+
     }
 
     public override void Stop(RAIN.Core.AI ai)

@@ -23,7 +23,7 @@ public class FallBackMove : RAINAction
 
         if(agent.destination != seek)
         {
-            Debug.Log("Seeking " + fb.name);
+            agent.areaMask = (1 << 5) | (1 << 4) | (1 << 3);
             agent.speed = ai.Body.GetComponent<Police>().Speed;
             agent.SetDestination(seek);
             agent.autoBraking = true;

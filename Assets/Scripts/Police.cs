@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using System;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Police : MonoBehaviour
+public class Police : MonoBehaviour, IAIGuy
 {
+    private int health = 100;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
     public enum CommunicationType
     {
         riotSptted,
@@ -30,16 +37,16 @@ public class Police : MonoBehaviour
     public float HorizontalFOV { get; set; }
 
     [SerializeField]
-    private float strength = 5;
-    public float Strength
+    private int strength = 5;
+    public int Strength
     {
         get { return strength; }
         set { strength = value; }
     }
 
     [SerializeField]
-    private float speed = 5;
-    public float Speed
+    private int speed = 5;
+    public int Speed
     {
         get { return speed; }
         set { speed = value; }
@@ -50,11 +57,32 @@ public class Police : MonoBehaviour
         get; set;
     }
 
+    public int fitness
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     void Awake()
     {
         SpottedRioters = new List<Collider>();
         AllPolice.Add(this);
         communicate += HandleCommunication;
+    }
+
+    public bool TakeDamage(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void HandleCommunication(CommunicationType type, object data)
