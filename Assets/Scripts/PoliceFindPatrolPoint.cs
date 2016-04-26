@@ -39,7 +39,6 @@ public class PoliceFindPatrolPoint : RAINDecision
 
     public override ActionResult Execute(AI ai)
     {
-        int q = 0;
         if (patrolPoints == null)
         {
             return ActionResult.FAILURE;

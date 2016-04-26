@@ -7,6 +7,8 @@ using RAIN.Core;
 [RAINAction]
 public class Fight : RAINAction
 {
+    float timer;
+
     public override void Start(RAIN.Core.AI ai)
     {
         base.Start(ai);
@@ -19,11 +21,19 @@ public class Fight : RAINAction
 
         if(otherGuy != null && otherGuy.gameObject)
         {
-            bool dead = otherGuy.TakeDamage(guy.Strength);
-            if (dead)
+            timer += Time.deltaTime;
+
+            if (timer > 1)
             {
-                ai.WorkingMemory.RemoveItem("Enemy");
-                return ActionResult.SUCCESS;
+                timer = 0;
+                bool dead = otherGuy.TakeDamage(guy.Strength);
+                if (dead)
+                {
+                    guy.RemoveDeadEnemy(otherGuy);
+                    GameObject.Destroy(otherGuy.gameObject);
+                    ai.WorkingMemory.SetItem<IAIGuy>("Enemy", null);
+                    return ActionResult.SUCCESS;
+                }
             }
             return ActionResult.RUNNING;
         }

@@ -5,10 +5,10 @@ public class FallbackPoint : MonoBehaviour
 {
 
     [SerializeField]
-    private bool formationPoint;
+    private bool formationPoint = false;
 
     [SerializeField]
-    private GameObject[] barrierStorage;
+    private GameObject[] barrierStorage = null;
 
     private List<BarrierPlacementSpot> barrierSpots = new List<BarrierPlacementSpot>();
 

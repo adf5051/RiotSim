@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Police : MonoBehaviour, IAIGuy
@@ -59,11 +60,12 @@ public class Police : MonoBehaviour, IAIGuy
 
     public int fitness
     {
-        get
-        {
-            throw new NotImplementedException();
-        }
+        get;
+
+        set;
     }
+
+    public BitArray Genes { get; set; }
 
     void Awake()
     {
@@ -72,11 +74,17 @@ public class Police : MonoBehaviour, IAIGuy
         communicate += HandleCommunication;
     }
 
+    void Start()
+    {
+        TranslateGenesToInts();
+    }
+
     public bool TakeDamage(int damage)
     {
         health -= damage;
-        if(health <= 0)
+        if (health <= 0)
         {
+            allPolice.Remove(this);
             return true;
         }
         else
@@ -120,5 +128,52 @@ public class Police : MonoBehaviour, IAIGuy
         {
             SpottedRioters.Remove(other);
         }
+    }
+
+    public void RemoveDeadEnemy(IAIGuy enemy)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void TranslateGenesToInts()
+    {
+        // hhh SpSpSp StStSt
+        // H 5-15-30-50
+        // Sp 1-1-2-2
+        // St 1-1-2-2
+
+        Health = 5;
+
+        if (Genes[0])
+            Health += 15;
+
+        if (Genes[1])
+            Health += 30;
+
+        if (Genes[2])
+            Health += 50;
+
+        speed = 1;
+
+        if (Genes[3])
+            speed += 1;
+
+        if (Genes[4])
+            speed += 2;
+
+        if (Genes[5])
+            speed += 2;
+
+        strength = 1;
+
+        if (Genes[6])
+            strength += 1;
+
+        if (Genes[7])
+            strength += 2;
+
+        if (Genes[8])
+            strength += 2;
+
     }
 }

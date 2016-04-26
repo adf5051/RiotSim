@@ -12,13 +12,14 @@ public class PoliceSpawner : MonoBehaviour {
     private int numPolice = 2;
 
     [SerializeField]
-    private Transform[] patrolPoints;
+    private Transform[] patrolPoints = null;
 
     // Use this for initialization
     void Start () {
         int trans;
         GameObject temp;
         RAIN.Core.AI rig;
+        Police p;
 
         if (patrolPoints != null && patrolPoints.Length > 0)
         {
@@ -28,13 +29,24 @@ public class PoliceSpawner : MonoBehaviour {
 
                 temp = GameObject.Instantiate(charPrefab);
                 temp.SetActive(false);
+
+                p = temp.GetComponent<Police>();
+                p.Genes = new System.Collections.BitArray(9);
+
+                for (int j = 0; j < 9; j++)
+                {
+                    int r = Random.Range(0, 1);
+                    bool bit = r == 1;
+                    p.Genes[j] = bit;
+                }
+
                 rig = temp.GetComponentInChildren<RAIN.Core.AIRig>().AI;
-                RAIN.Minds.BasicMind mind = rig.Mind as RAIN.Minds.BasicMind;
                 rig.WorkingMemory.SetItem<Transform>("patrolRoute", patrolPoints[0].parent);                
                 temp.transform.position = patrolPoints[trans].position;
                 temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
                 temp.name = "Police";
                 temp.SetActive(true);
+
             }
         }
 	}

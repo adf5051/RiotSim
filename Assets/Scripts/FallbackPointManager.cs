@@ -9,7 +9,7 @@ public class FallbackPointManager : MonoBehaviour {
     }
 
     [SerializeField]
-    private FallbackPoint[] fallbackPoints;
+    private FallbackPoint[] fallbackPoints = null;
 
     void Awake()
     {

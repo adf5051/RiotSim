@@ -4,11 +4,11 @@ using System.Collections;
 public class CivilianSpawner : MonoBehaviour {
 
     [SerializeField]
-    private GameObject charPrefab;
+    private GameObject charPrefab = null;
 
     [SerializeField]
     [Range(2, 20)]
-    private int numCivies;
+    private int numCivies = 10;
 
     private Bounds bounds;
 
@@ -17,11 +17,11 @@ public class CivilianSpawner : MonoBehaviour {
         bounds = gameObject.GetComponent<MeshFilter>().mesh.bounds;
 
         GameObject temp;
-        Civilian script;
+        //Civilian script;
         Vector3 pos;
         for (int i = 0; i < numCivies; i++) {
             temp = GameObject.Instantiate(charPrefab);
-            script = temp.AddComponent<Civilian>();
+            //script = temp.AddComponent<Civilian>();
             float x = Random.Range(-bounds.extents.x * transform.localScale.x, bounds.extents.x * transform.localScale.x) + transform.position.x;
             float z = Random.Range(-bounds.extents.z * transform.localScale.z, bounds.extents.z * transform.localScale.z) + transform.position.z;
             pos = new Vector3(x, 2, z);

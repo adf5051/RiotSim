@@ -3,7 +3,9 @@ using System.Collections;
 
 public interface IAIGuy
 {
-    int fitness { get; }
+    BitArray Genes { get; set; }
+
+    int fitness { get; set; }
 
     GameObject gameObject { get; }
 
@@ -15,4 +17,7 @@ public interface IAIGuy
 
     bool TakeDamage(int damage);
 
+    void RemoveDeadEnemy(IAIGuy enemy);
+
+    void TranslateGenesToInts();
 }

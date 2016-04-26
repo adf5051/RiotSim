@@ -15,27 +15,35 @@ public class RiotFindEnemey : RAINDecision
 
     public override ActionResult Execute(RAIN.Core.AI ai)
     {
-        ActionResult tResult = ActionResult.SUCCESS;
         Rioter r = ai.Body.GetComponent<Rioter>();
         IAIGuy otherGuy = ai.WorkingMemory.GetItem<IAIGuy>("Enemy");
 
-        if(r.CloseEnemies.Count <= 0)
+        if (r.CloseEnemies.Count <= 0)
         {
-            return ActionResult.FAILURE;
+            return ActionResult.SUCCESS;
         }
 
-        if(r.CloseEnemies.Count > 0 && otherGuy == null)
+        if (r.CloseEnemies.Count > 0 && otherGuy == null)
         {
 
             float dist = float.MaxValue;
             IAIGuy closest = null;
             Vector3 mag;
 
-            foreach(IAIGuy guy in r.CloseEnemies)
+            for (int i = 0; i < r.CloseEnemies.Count; i++)
             {
+                IAIGuy guy = r.CloseEnemies[i];
+
+                if(guy.Health <= 0 || guy.gameObject == null)
+                {
+                    i--;
+                    r.RemoveDeadEnemy(guy);
+                    continue;
+                }
+
                 mag = guy.gameObject.transform.position - r.gameObject.transform.position;
 
-                if(mag.magnitude < dist)
+                if (mag.magnitude < dist)
                 {
                     dist = mag.magnitude;
                     closest = guy;
@@ -47,10 +55,11 @@ public class RiotFindEnemey : RAINDecision
         }
 
         ActionResult move = _children[0].Run(ai);
-        if(move == ActionResult.RUNNING)
+        if (move == ActionResult.RUNNING)
         {
             return move;
-        }else if(move == ActionResult.SUCCESS)
+        }
+        else if (move == ActionResult.SUCCESS)
         {
             return _children[1].Run(ai);
         }

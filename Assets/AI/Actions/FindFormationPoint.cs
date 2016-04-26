@@ -23,7 +23,7 @@ public class FindFormationPoint : RAINDecision
             fb = FallbackPointManager.Instance.FindFormationPoint();
             ai.WorkingMemory.SetItem<FallbackPoint>("CurrentFB", fb);
         }
-        Vector3 target = ai.WorkingMemory.GetItem<Vector3>("Target");
+        //Vector3 target = ai.WorkingMemory.GetItem<Vector3>("Target");
 
         if(formationPoint == null)
         {

@@ -7,13 +7,10 @@ using RAIN.Core;
 [RAINDecision]
 public class DetectRiotPosition : RAINDecision
 {
-    private int _lastRunning = 0;
 
     public override void Start(RAIN.Core.AI ai)
     {
         base.Start(ai);
-
-        _lastRunning = 0;
     }
 
     public override ActionResult Execute(RAIN.Core.AI ai)
@@ -22,9 +19,9 @@ public class DetectRiotPosition : RAINDecision
 
         FallbackPoint fp = FallbackPointManager.Instance.FindNextUncompromised();
         ai.WorkingMemory.SetItem<FallbackPoint>("SeekFB", fp);
-        FallbackPoint current = ai.WorkingMemory.GetItem<FallbackPoint>("CurrentFB");
+        //FallbackPoint current = ai.WorkingMemory.GetItem<FallbackPoint>("CurrentFB");
 
-        if (fp.FormationPoint || fp == null)
+        if (fp == null || fp.FormationPoint)
         {
             return ActionResult.FAILURE;
         }
