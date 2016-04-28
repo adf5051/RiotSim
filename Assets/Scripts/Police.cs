@@ -19,6 +19,8 @@ public class Police : MonoBehaviour, IAIGuy
         claimPlacement,
     }
 
+    public int PlacedBarriers { get; set; }
+
     public delegate void Communicate(CommunicationType type, object data);
     public static event Communicate communicate;
     private static List<Police> allPolice = new List<Police>();
@@ -58,24 +60,22 @@ public class Police : MonoBehaviour, IAIGuy
         get; set;
     }
 
-    public int fitness
-    {
-        get;
-
-        set;
-    }
+    public int fitness { get; set; }
 
     public BitArray Genes { get; set; }
 
+    public bool Dead { get; set; }
+
     void Awake()
-    {
-        SpottedRioters = new List<Collider>();
+    {    
         AllPolice.Add(this);
         communicate += HandleCommunication;
     }
 
-    void Start()
+    public void Initialize()
     {
+        SpottedRioters = new List<Collider>();
+        PlacedBarriers = 0;
         TranslateGenesToInts();
     }
 
@@ -84,7 +84,8 @@ public class Police : MonoBehaviour, IAIGuy
         health -= damage;
         if (health <= 0)
         {
-            allPolice.Remove(this);
+            //allPolice.Remove(this);
+            Dead = true;
             return true;
         }
         else
@@ -132,7 +133,20 @@ public class Police : MonoBehaviour, IAIGuy
 
     public void RemoveDeadEnemy(IAIGuy enemy)
     {
-        throw new NotImplementedException();
+        
+    }
+
+    public void CalculateFitness()
+    {
+        fitness = 0;
+
+        if (!Dead)
+        {
+            fitness += 10;
+        }
+
+        fitness += (10 * PlacedBarriers);
+        fitness += health;
     }
 
     public void TranslateGenesToInts()

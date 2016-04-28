@@ -2,20 +2,54 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SimManager : MonoBehaviour {
+public class SimManager : MonoBehaviour
+{
 
-    //List<IAIGuy> PolicePop = new List<IAIGuy>();
-    //List<IAIGuy> RiotPop = new List<IAIGuy>();
+    static SimManager instance;
+    public static SimManager Instance
+    {
+        get { return instance; }
+    }
 
-	// Use this for initialization
-	void Start () {
+    public List<PoliceSpawner> PoliceSpawners { get; set; }
+    public List<RiotSpawner> RiotSpawners { get; set; }
+    public List<CivilianSpawner> CivSpawners { get; set; }
+
+    public List<IAIGuy> PolicePop = new List<IAIGuy>();
+    public List<IAIGuy> RiotPop = new List<IAIGuy>();
+
+    // Use this for initialization
+    void Awake()
+    {
+        if (instance)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
+        PoliceSpawners = new List<PoliceSpawner>();
+        RiotSpawners = new List<RiotSpawner>();
+        CivSpawners = new List<CivilianSpawner>();
+
         //TestGeneticAlgorithm();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
+
+    void Start()
+    {
+        NewRound();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            NewRound();
+        }
+    }
 
     void TestGeneticAlgorithm()
     {
@@ -25,7 +59,7 @@ public class SimManager : MonoBehaviour {
         IAIGuy four = new Police();
         IAIGuy five = new Police();
 
-        bool[] genes = { true, true, false, false, true, false, false, true, true};
+        bool[] genes = { true, true, false, false, true, false, false, true, true };
         one.Genes = new BitArray(genes);
         one.fitness = 40;
 
@@ -57,9 +91,9 @@ public class SimManager : MonoBehaviour {
         guys = GeneticGeneration.BreedGeneration(guys);
 
         string output = "";
-        foreach(IAIGuy guy in guys)
+        foreach (IAIGuy guy in guys)
         {
-            foreach(bool b in guy.Genes)
+            foreach (bool b in guy.Genes)
             {
                 output += b;
             }
@@ -67,5 +101,57 @@ public class SimManager : MonoBehaviour {
         }
 
         Debug.Log(output);
+    }
+
+    void NewRound()
+    {
+        CalculateFitness(PolicePop);
+        CalculateFitness(RiotPop);
+
+        PolicePop = GeneticGeneration.BreedGeneration(PolicePop);
+        RiotPop = GeneticGeneration.BreedGeneration(RiotPop);
+
+        int pop = PolicePop.Count / PoliceSpawners.Count;
+        int spawner = 0;
+
+        List<IAIGuy> population = new List<IAIGuy>();
+
+        for (int i = 0; i < PolicePop.Count; i++)
+        {
+            population.Add(PolicePop[i]);
+
+            if ((i + 1) % pop == 0)
+            {
+                PoliceSpawners[spawner].NewRound(population);
+                population.Clear();
+                spawner++;
+            }
+        }
+
+        pop = RiotPop.Count / RiotSpawners.Count;
+        spawner = 0;
+
+        population = new List<IAIGuy>();
+
+        for (int i = 0; i < RiotPop.Count; i++)
+        {
+            population.Add(RiotPop[i]);
+
+            if ((i + 1) % pop == 0)
+            {
+                RiotSpawners[spawner].NewRound(population);
+                population.Clear();
+                spawner++;
+            }
+        }
+    }
+
+    void CalculateFitness(List<IAIGuy> pop)
+    {
+        foreach(IAIGuy guy in pop)
+        {
+            guy.gameObject.SetActive(false);
+            guy.CalculateFitness();
+        }
     }
 }

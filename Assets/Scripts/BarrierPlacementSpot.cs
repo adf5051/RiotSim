@@ -21,6 +21,7 @@ public class BarrierPlacementSpot : MonoBehaviour
             {
                 GameObject barrier = other.GetComponent<Police>().Barrier;
                 other.GetComponent<Police>().Barrier = null;
+                other.GetComponent<Police>().PlacedBarriers++;
                 Barrier = barrier;
                 barrier.SetActive(true);
                 barrier.transform.position = transform.position;

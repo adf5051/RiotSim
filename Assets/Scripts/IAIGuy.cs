@@ -5,6 +5,8 @@ public interface IAIGuy
 {
     BitArray Genes { get; set; }
 
+    bool Dead { get; set; }
+
     int fitness { get; set; }
 
     GameObject gameObject { get; }
@@ -20,4 +22,8 @@ public interface IAIGuy
     void RemoveDeadEnemy(IAIGuy enemy);
 
     void TranslateGenesToInts();
+
+    void Initialize();
+
+    void CalculateFitness();
 }

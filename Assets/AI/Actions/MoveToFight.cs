@@ -20,7 +20,7 @@ public class MoveToFight : RAINAction
         if (otherGuy == null)
         {
             return ActionResult.SUCCESS;
-        }else if(otherGuy.Health <= 0)
+        }else if(otherGuy.Health <= 0 || otherGuy.Dead)
         {
             ai.WorkingMemory.SetItem<IAIGuy>("Enemy", null);
             ai.Body.GetComponent<IAIGuy>().RemoveDeadEnemy(otherGuy);

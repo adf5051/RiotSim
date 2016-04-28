@@ -7,6 +7,8 @@ using System.Collections;
 public class Rioter : MonoBehaviour, IAIGuy
 {
 
+    public bool Dead { get; set; }
+
     private int health = 100;
     public int Health
     {
@@ -55,33 +57,14 @@ public class Rioter : MonoBehaviour, IAIGuy
         set { closeEnemies = value; }
     }
 
-    public int fitness
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
+    public int fitness { set; get; }
 
     public BitArray Genes { get; set; }
 
-    int IAIGuy.fitness
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-
-        set
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    // Use this for initialization
-    void Start()
+    public void Initialize()
     {
         CloseEnemies = new List<IAIGuy>();
+        TranslateGenesToInts();
     }
 
     void OnTriggerEnter(Collider other)
@@ -125,6 +108,7 @@ public class Rioter : MonoBehaviour, IAIGuy
         health -= damage;
         if (health <= 0)
         {
+            Dead = true;
             return true;
         }
         else
@@ -183,5 +167,10 @@ public class Rioter : MonoBehaviour, IAIGuy
         if (Genes[8])
             strength += 2;
 
+    }
+
+    public void CalculateFitness()
+    {
+        fitness = 100;
     }
 }

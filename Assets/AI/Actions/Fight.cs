@@ -19,7 +19,7 @@ public class Fight : RAINAction
         IAIGuy guy = ai.Body.GetComponent<IAIGuy>();
         IAIGuy otherGuy = ai.WorkingMemory.GetItem<IAIGuy>("Enemy");
 
-        if(otherGuy != null && otherGuy.gameObject)
+        if(otherGuy != null && otherGuy.gameObject && !otherGuy.Dead)
         {
             timer += Time.deltaTime;
 
@@ -30,7 +30,9 @@ public class Fight : RAINAction
                 if (dead)
                 {
                     guy.RemoveDeadEnemy(otherGuy);
-                    GameObject.Destroy(otherGuy.gameObject);
+                    //GameObject.Destroy(otherGuy.gameObject);
+                    otherGuy.gameObject.SetActive(false);
+                    otherGuy.Dead = true;
                     ai.WorkingMemory.SetItem<IAIGuy>("Enemy", null);
                     return ActionResult.SUCCESS;
                 }

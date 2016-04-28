@@ -14,9 +14,38 @@ public class PoliceSpawner : MonoBehaviour {
     [SerializeField]
     private Transform[] patrolPoints = null;
 
-    // Use this for initialization
-    void Start () {
+    public void NewRound(List<IAIGuy> pop)
+    {
         int trans;
+        GameObject temp;
+        RAIN.Core.AI rig;
+        Police p;
+
+        if (patrolPoints != null && patrolPoints.Length > 0)
+        {
+            for(int i = 0; i < pop.Count; i++)
+            {
+                trans = Random.Range(0, patrolPoints.Length);
+                temp = pop[i].gameObject;
+                p = temp.GetComponent<Police>();
+                p.Initialize();
+
+                rig = temp.GetComponentInChildren<RAIN.Core.AIRig>().AI;
+                rig.WorkingMemory.SetItem<Transform>("patrolRoute", patrolPoints[0].parent);
+                rig.Mind.AIInit();
+
+                temp.transform.position = patrolPoints[trans].position;
+                temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
+                temp.name = "Police";
+                temp.SetActive(true);
+            }
+        }
+    }
+
+    // Use this for initialization
+    void Awake() {
+        SimManager.Instance.PoliceSpawners.Add(this);
+
         GameObject temp;
         RAIN.Core.AI rig;
         Police p;
@@ -25,7 +54,6 @@ public class PoliceSpawner : MonoBehaviour {
         {
             for (int i = 0; i < numPolice; i++)
             {
-                trans = Random.Range(0, patrolPoints.Length);
 
                 temp = GameObject.Instantiate(charPrefab);
                 temp.SetActive(false);
@@ -40,13 +68,7 @@ public class PoliceSpawner : MonoBehaviour {
                     p.Genes[j] = bit;
                 }
 
-                rig = temp.GetComponentInChildren<RAIN.Core.AIRig>().AI;
-                rig.WorkingMemory.SetItem<Transform>("patrolRoute", patrolPoints[0].parent);                
-                temp.transform.position = patrolPoints[trans].position;
-                temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
-                temp.name = "Police";
-                temp.SetActive(true);
-
+                SimManager.Instance.PolicePop.Add(p);
             }
         }
 	}
