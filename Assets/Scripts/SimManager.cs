@@ -105,6 +105,8 @@ public class SimManager : MonoBehaviour
 
     void NewRound()
     {
+        FallbackPointManager.Instance.NewRound();
+
         CalculateFitness(PolicePop);
         CalculateFitness(RiotPop);
 

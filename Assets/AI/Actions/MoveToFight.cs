@@ -29,7 +29,7 @@ public class MoveToFight : RAINAction
 
         agent.SetDestination(otherGuy.gameObject.transform.position);
 
-        if(agent.remainingDistance < 5)
+        if(agent.remainingDistance < 2)
         {
             agent.Stop();
         }

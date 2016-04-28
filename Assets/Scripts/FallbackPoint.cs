@@ -101,4 +101,14 @@ public class FallbackPoint : MonoBehaviour
 
         return closest;
     }
+
+    public void Clear()
+    {
+        freeFormationPoints = formationPoints;
+
+        foreach(BarrierPlacementSpot bps in barrierSpots)
+        {
+            bps.Clear();
+        }
+    }
 }

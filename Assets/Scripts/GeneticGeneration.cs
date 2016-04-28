@@ -35,7 +35,7 @@ public class GeneticGeneration {
             p1 = c1.Genes;
             p2 = c2.Genes;
 
-            // crossover
+            // crossover - turn this random
             c1.Genes[0] = p1[0];
             c1.Genes[1] = p1[1];
             c1.Genes[2] = p2[2];

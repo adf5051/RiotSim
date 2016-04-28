@@ -52,4 +52,12 @@ public class FallbackPointManager : MonoBehaviour {
 
         return null;
     }
+
+    public void NewRound()
+    {
+        foreach(FallbackPoint fp in fallbackPoints)
+        {
+            fp.Clear();
+        }
+    }
 }

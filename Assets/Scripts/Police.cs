@@ -167,27 +167,27 @@ public class Police : MonoBehaviour, IAIGuy
         if (Genes[2])
             Health += 50;
 
-        speed = 1;
+        speed = 2;
 
         if (Genes[3])
-            speed += 1;
+            speed += 2;
 
         if (Genes[4])
-            speed += 2;
+            speed += 3;
 
         if (Genes[5])
-            speed += 2;
+            speed += 3;
 
-        strength = 1;
+        strength = 2;
 
         if (Genes[6])
-            strength += 1;
+            strength += 2;
 
         if (Genes[7])
-            strength += 2;
+            strength += 3;
 
         if (Genes[8])
-            strength += 2;
+            strength += 3;
 
     }
 }

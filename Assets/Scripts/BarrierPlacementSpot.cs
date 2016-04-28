@@ -13,6 +13,12 @@ public class BarrierPlacementSpot : MonoBehaviour
         get; private set;
     }
 
+    public void Clear()
+    {
+        Barrier = null;
+        Claimed = false;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Police" && !other.isTrigger)

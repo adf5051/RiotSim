@@ -20,6 +20,7 @@ public class PoliceSpawner : MonoBehaviour {
         GameObject temp;
         RAIN.Core.AI rig;
         Police p;
+        NavMeshAgent agent;
 
         if (patrolPoints != null && patrolPoints.Length > 0)
         {
@@ -27,6 +28,8 @@ public class PoliceSpawner : MonoBehaviour {
             {
                 trans = Random.Range(0, patrolPoints.Length);
                 temp = pop[i].gameObject;
+                agent = temp.GetComponent<NavMeshAgent>();
+
                 p = temp.GetComponent<Police>();
                 p.Initialize();
 
@@ -38,6 +41,7 @@ public class PoliceSpawner : MonoBehaviour {
                 temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
                 temp.name = "Police";
                 temp.SetActive(true);
+                agent.ResetPath();
             }
         }
     }
