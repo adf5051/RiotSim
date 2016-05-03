@@ -65,7 +65,7 @@ public class FallbackPoint : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Rioter")
+        if (other.tag == "Rioter" && !other.isTrigger)
         {
             c = Color.red;
             Compromised = true;
@@ -104,6 +104,7 @@ public class FallbackPoint : MonoBehaviour
 
     public void Clear()
     {
+        c = Color.blue;
         freeFormationPoints = formationPoints;
 
         foreach(BarrierPlacementSpot bps in barrierSpots)

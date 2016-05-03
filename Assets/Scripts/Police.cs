@@ -19,6 +19,29 @@ public class Police : MonoBehaviour, IAIGuy
         claimPlacement,
     }
 
+    private Observation statsBeforeFight;
+
+    bool fighting;
+    public bool Fighting
+    {
+        get { return fighting; }
+        set
+        {
+            if(value && fighting != value)
+            {
+                statsBeforeFight.carryingBarrier = Barrier != null;
+                statsBeforeFight.health = health;
+                statsBeforeFight.strength = strength;
+            }
+            else
+            {
+                statsBeforeFight = default(Observation);
+            }
+
+            fighting = value;
+        }
+    }
+
     public int PlacedBarriers { get; set; }
 
     public delegate void Communicate(CommunicationType type, object data);
@@ -30,7 +53,7 @@ public class Police : MonoBehaviour, IAIGuy
         private set { allPolice = value; }
     }
 
-    public List<Collider> SpottedRioters
+    public List<Rioter> SpottedRioters
     {
         get; private set;
     }
@@ -67,15 +90,17 @@ public class Police : MonoBehaviour, IAIGuy
     public bool Dead { get; set; }
 
     void Awake()
-    {    
+    {
         AllPolice.Add(this);
         communicate += HandleCommunication;
     }
 
     public void Initialize()
     {
-        SpottedRioters = new List<Collider>();
+        SpottedRioters = new List<Rioter>();
         PlacedBarriers = 0;
+        fighting = false;
+        statsBeforeFight = default(Observation);
         TranslateGenesToInts();
     }
 
@@ -86,6 +111,15 @@ public class Police : MonoBehaviour, IAIGuy
         {
             //allPolice.Remove(this);
             Dead = true;
+
+            if (Fighting &&
+                !EqualityComparer<Observation>.Default.Equals(statsBeforeFight, default(Observation)))
+            {
+                SimManager.Instance.policeBayes.AddObs(statsBeforeFight.health, statsBeforeFight.strength, statsBeforeFight.carryingBarrier, false);
+                fighting = false;
+                statsBeforeFight = default(Observation);
+            }
+
             return true;
         }
         else
@@ -117,23 +151,46 @@ public class Police : MonoBehaviour, IAIGuy
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Rioter" && !SpottedRioters.Contains(other))
+        if (other.isTrigger)
         {
-            SpottedRioters.Add(other);
+            return;
+        }
+
+        if (other.tag == "Rioter" && !SpottedRioters.Contains(other.GetComponent<Rioter>()))
+        {
+            SpottedRioters.Add(other.GetComponent<Rioter>());
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Rioter" && SpottedRioters.Contains(other))
+        if (other.isTrigger)
         {
-            SpottedRioters.Remove(other);
+            return;
+        }
+
+        if (other.tag == "Rioter" && SpottedRioters.Contains(other.GetComponent<Rioter>()))
+        {
+            SpottedRioters.Remove(other.GetComponent<Rioter>());
         }
     }
 
     public void RemoveDeadEnemy(IAIGuy enemy)
     {
-        
+        if (enemy.GetType() == typeof(Rioter) && SpottedRioters.Contains(enemy as Rioter))
+        {
+            SpottedRioters.Remove(enemy as Rioter);
+            if (Fighting)
+            {
+                if (!EqualityComparer<Observation>.Default.Equals(statsBeforeFight, default(Observation)))
+                {
+                    SimManager.Instance.policeBayes.AddObs(statsBeforeFight.health, statsBeforeFight.strength, statsBeforeFight.carryingBarrier, true);
+                }
+
+                Fighting = false;
+                statsBeforeFight = default(Observation);
+            }
+        }
     }
 
     public void CalculateFitness()

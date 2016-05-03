@@ -38,23 +38,23 @@ public class GeneticGeneration {
             // crossover - turn this random
             c1.Genes[0] = p1[0];
             c1.Genes[1] = p1[1];
-            c1.Genes[2] = p2[2];
+            c1.Genes[2] = p1[2];
             c1.Genes[3] = p2[3];
-            c1.Genes[4] = p1[4];
-            c1.Genes[5] = p1[5];
-            c1.Genes[6] = p2[6];
-            c1.Genes[7] = p2[7];
-            c1.Genes[8] = p2[8];
+            c1.Genes[4] = p2[4];
+            c1.Genes[5] = p2[5];
+            c1.Genes[6] = p1[6];
+            c1.Genes[7] = p1[7];
+            c1.Genes[8] = p1[8];
 
             c2.Genes[0] = p2[0];
             c2.Genes[1] = p2[1];
-            c2.Genes[2] = p1[2];
+            c2.Genes[2] = p2[2];
             c2.Genes[3] = p1[3];
-            c2.Genes[4] = p2[4];
-            c2.Genes[5] = p2[5];
-            c2.Genes[6] = p1[6];
-            c2.Genes[7] = p1[7];
-            c2.Genes[8] = p1[8];
+            c2.Genes[4] = p1[4];
+            c2.Genes[5] = p1[5];
+            c2.Genes[6] = p2[6];
+            c2.Genes[7] = p2[7];
+            c2.Genes[8] = p2[8];
 
             // 2 percent chance of mutation
             if (Random.Range(0f,1f) < 0.02)

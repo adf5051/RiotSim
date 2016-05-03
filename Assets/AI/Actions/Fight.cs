@@ -34,10 +34,22 @@ public class Fight : RAINAction
                     otherGuy.gameObject.SetActive(false);
                     otherGuy.Dead = true;
                     ai.WorkingMemory.SetItem<IAIGuy>("Enemy", null);
+
+                    if(guy.GetType() == typeof(Police))
+                    {
+                        Debug.Log("Skanks");
+                    }
+
                     return ActionResult.SUCCESS;
                 }
             }
             return ActionResult.RUNNING;
+        }
+
+        if (guy.GetType() == typeof(Police))
+        {
+            Debug.Log("Hoes");
+            Debug.Log(otherGuy);
         }
 
         return ActionResult.SUCCESS;

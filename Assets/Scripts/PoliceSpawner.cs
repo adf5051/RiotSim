@@ -37,6 +37,9 @@ public class PoliceSpawner : MonoBehaviour {
                 rig.WorkingMemory.SetItem<Transform>("patrolRoute", patrolPoints[0].parent);
                 rig.Mind.AIInit();
 
+                p.KnowAboutRiot = false;
+                rig.WorkingMemory.SetItem<bool>("RiotSpotted", false);
+
                 temp.transform.position = patrolPoints[trans].position;
                 temp.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
                 temp.name = "Police";

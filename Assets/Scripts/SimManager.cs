@@ -11,6 +11,8 @@ public class SimManager : MonoBehaviour
         get { return instance; }
     }
 
+    public PoliceBayes policeBayes = new PoliceBayes();
+
     public List<PoliceSpawner> PoliceSpawners { get; set; }
     public List<RiotSpawner> RiotSpawners { get; set; }
     public List<CivilianSpawner> CivSpawners { get; set; }
@@ -29,6 +31,8 @@ public class SimManager : MonoBehaviour
         {
             instance = this;
         }
+
+        policeBayes.ReadObsTab("PoliceFightTab.txt");
 
         PoliceSpawners = new List<PoliceSpawner>();
         RiotSpawners = new List<RiotSpawner>();
@@ -105,6 +109,8 @@ public class SimManager : MonoBehaviour
 
     void NewRound()
     {
+        policeBayes.Tab2File("PoliceTabSaved.txt");
+        policeBayes.BuildStats();
         FallbackPointManager.Instance.NewRound();
 
         CalculateFitness(PolicePop);

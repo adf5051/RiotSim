@@ -30,7 +30,7 @@ public class DetectRioters : RAINAction
         return (riotFound) ? ActionResult.FAILURE : ActionResult.SUCCESS;
     }
 
-    private bool DetectRioter(AI ai, List<Collider> rioters, float hfov = 90)
+    private bool DetectRioter(AI ai, List<Rioter> rioters, float hfov = 90)
     {
 
         Vector3 rpos;
@@ -43,9 +43,9 @@ public class DetectRioters : RAINAction
         float fdot;
         float hangle;
 
-        foreach(Collider c in rioters)
+        foreach(IAIGuy c in rioters)
         {
-            rpos = c.transform.position;
+            rpos = c.gameObject.transform.position;
             ptor = rpos - ai.Body.transform.position;
             fdot = Vector3.Dot(ptor, ai.Body.transform.forward);
 

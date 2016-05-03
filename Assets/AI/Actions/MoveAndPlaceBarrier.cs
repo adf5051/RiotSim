@@ -26,7 +26,7 @@ public class MoveAndPlaceBarrier : RAINAction
         {
             agent.SetDestination(ai.WorkingMemory.GetItem<Vector3>("Target"));
             agent.autoBraking = true;
-            agent.speed = p.Strength;
+            agent.speed = (p.Strength > p.Speed) ? p.Speed: p.Strength;
             agent.Resume();
         }
 
