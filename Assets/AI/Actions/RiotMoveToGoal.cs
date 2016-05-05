@@ -17,16 +17,20 @@ public class RiotMoveToGoal : RAINAction
         NavMeshAgent agent = ai.Body.GetComponent<NavMeshAgent>();
 
         Vector3 goalPos = ai.WorkingMemory.GetItem<GameObject>("RiotGoal").transform.position;
-        Vector3 f = ai.Body.transform.forward;
-        Vector3 vtog = goalPos - ai.Body.transform.position;
-        float dot = Vector3.Dot(vtog, f);
-        Vector3 destination = goalPos;
-        float angle = Vector3.Angle(f, vtog);
+        Vector3 offset = Vector3.zero;
+        offset.x = ai.Body.transform.position.x;
 
-        if (dot > 0 && angle < 22.5f) 
-        {
-            destination = ai.Body.transform.position + (ai.Body.transform.forward * dot);
-        } 
+        Vector3 destination = goalPos + offset;
+        //Vector3 f = ai.Body.transform.forward;
+        //Vector3 vtog = goalPos - ai.Body.transform.position;
+        //float dot = Vector3.Dot(vtog, f);
+        //Vector3 destination = goalPos;
+        //float angle = Vector3.Angle(f, vtog);
+
+        //if (dot > 0 && angle < 22.5f) 
+        //{
+        //    destination = ai.Body.transform.position + (ai.Body.transform.forward * dot);
+        //} 
 
         if(agent.destination != destination)
         {

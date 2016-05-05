@@ -210,8 +210,10 @@ public class PoliceBayes
     double CalcBayes(int health, int strength, bool barrier, bool fight)
     {
         int fightOff = fight ? 0 : 1;
-        double like = GauProb(healthMean[fightOff], healthStdDev[fightOff], health) *
-                      GauProb(stMean[fightOff], stStdDev[fightOff], strength) *
+        double propHealth = GauProb(healthMean[fightOff], healthStdDev[fightOff], health);
+        double propSt = GauProb(stMean[fightOff], stStdDev[fightOff], strength);
+
+        double like = propHealth * propSt *
                       barrierprp[barrier ? 0 : 1, fightOff] *
                       fightprp[fightOff];
         return like;

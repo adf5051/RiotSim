@@ -30,15 +30,17 @@ public class FindEmptyBarrierSpot : RAINDecision
 
             foreach (BarrierPlacementSpot bps in fb.BarrierSpots)
             {
+                if (bps.Barrier)
+                {
+                    continue;
+                }
+
                 if (bps.Claimed && bps.transform.position == target)
                 {
                     closest = target;
                     break;
                 }
-                else if ( bps.Barrier)
-                {
-                    continue;
-                }
+                
 
                 dist = (bps.transform.position - ai.Body.transform.position).magnitude;
 

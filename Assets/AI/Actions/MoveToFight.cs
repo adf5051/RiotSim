@@ -16,7 +16,8 @@ public class MoveToFight : RAINAction
     {
         NavMeshAgent agent = ai.Body.GetComponent<NavMeshAgent>();
         IAIGuy otherGuy = ai.WorkingMemory.GetItem<IAIGuy>("Enemy");
-
+        //agent.ResetPath();
+        
         if (otherGuy == null)
         {
             return ActionResult.SUCCESS;
@@ -27,9 +28,11 @@ public class MoveToFight : RAINAction
             return ActionResult.SUCCESS;
         }
 
+        Vector3 mag = ai.Body.transform.position - otherGuy.gameObject.transform.position;
+
         agent.SetDestination(otherGuy.gameObject.transform.position);
 
-        if(agent.remainingDistance < 2)
+        if(mag.magnitude < 2)
         {
             agent.Stop();
         }
