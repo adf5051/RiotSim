@@ -61,6 +61,28 @@ public class Rioter : MonoBehaviour, IAIGuy
 
     public BitArray Genes { get; set; }
 
+    public void SimStateChange(State state)
+    {
+        RAIN.Core.AIRig ai = GetComponentInChildren<RAIN.Core.AIRig>();
+        ai.AI.WorkingMemory.SetItem<State>("SimState", state);
+        NavMeshAgent navAgent = gameObject.GetComponent<NavMeshAgent>();
+        ai.AI.Mind.AIInit();
+
+        if (gameObject.activeInHierarchy)
+        {
+            switch (state)
+            {
+                case State.running:
+                    navAgent.Resume();
+                    break;
+                case State.stopped:
+                    navAgent.Stop();
+                    navAgent.ResetPath();
+                    break;
+            }
+        }
+    }
+
     public void Initialize()
     {
         CloseEnemies = new List<IAIGuy>();

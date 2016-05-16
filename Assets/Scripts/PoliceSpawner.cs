@@ -76,6 +76,7 @@ public class PoliceSpawner : MonoBehaviour {
                 }
 
                 SimManager.Instance.PolicePop.Add(p);
+                SimManager.Instance.onStateChanged += p.SimStateChange;
             }
         }
 	}

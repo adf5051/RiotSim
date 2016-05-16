@@ -59,6 +59,7 @@ public class RiotSpawner : MonoBehaviour {
             }
 
             SimManager.Instance.RiotPop.Add(rioter);
+            SimManager.Instance.onStateChanged += rioter.SimStateChange;
         }
 	}
 

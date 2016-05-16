@@ -89,6 +89,28 @@ public class Police : MonoBehaviour, IAIGuy
 
     public bool Dead { get; set; }
 
+    public void SimStateChange(State state)
+    {
+        RAIN.Core.AIRig ai = GetComponentInChildren<RAIN.Core.AIRig>();
+        ai.AI.WorkingMemory.SetItem<State>("SimState", state);
+        NavMeshAgent navAgent = gameObject.GetComponent<NavMeshAgent>();
+        ai.AI.Mind.AIInit();
+
+        if (gameObject.activeInHierarchy)
+        {
+            switch (state)
+            {
+                case State.running:
+                    navAgent.Resume();
+                    break;
+                case State.stopped:
+                    navAgent.Stop();
+                    navAgent.ResetPath();
+                    break;
+            }
+        }
+    }
+
     void Awake()
     {
         AllPolice.Add(this);
@@ -132,6 +154,9 @@ public class Police : MonoBehaviour, IAIGuy
     {
         if (type == CommunicationType.riotSptted && !KnowAboutRiot)
         {
+            if (!SimManager.Instance.RiotSpotted)
+                SimManager.Instance.RiotSpotted = true;
+
             KnowAboutRiot = true;
             GetComponentInChildren<RAIN.Core.AIRig>().AI.WorkingMemory.SetItem<bool>("RiotSpotted", true);
             GetComponent<NavMeshAgent>().Stop();
